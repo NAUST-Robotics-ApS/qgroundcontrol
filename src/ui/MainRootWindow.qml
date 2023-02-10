@@ -535,7 +535,17 @@ ApplicationWindow {
         }
 
         onOpened: {
-            criticalVehicleMessageText.text = mainWindow._vehicleMessage
+            var message = mainWindow._vehicleMessage
+            //PK Quality hack - check the content of the message and append appropriate text. The message in the if clause has to be the same as the message
+            //displayed in the popup on QGC.
+            if(message == "Reposition is outside geofence"){
+                message += " TEST"
+            }
+            if(message == "Failure killswitch engaged"){
+                message += " Disengage the killswitch."
+            }
+
+            criticalVehicleMessageText.text = message
         }
 
         onClosed: {

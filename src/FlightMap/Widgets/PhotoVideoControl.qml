@@ -48,7 +48,7 @@ Rectangle {
     property bool   _videoStreamRecording:                      _videoStreamManager.recording
     property bool   _videoStreamCanShoot:                       _videoStreamIsStreaming
     property bool   _videoStreamIsShootingInCurrentMode:        _videoStreamInPhotoMode ? !_simplePhotoCaptureIsIdle : _videoStreamRecording
-    property bool   _videoStreamInPhotoMode:                    false
+    property bool   _videoStreamInPhotoMode:                    true //PK set the default mode to the photo mode. Farmers don't have a possibility to record videos at the moment.
 
     // The following properties relate to a mavlink protocol camera
     property var    _mavlinkCameraManager:                      _activeVehicle ? _activeVehicle.cameraManager : null
@@ -167,66 +167,66 @@ Rectangle {
         // Photo/Video Mode Selector
         // IMPORTANT: This control supports both mavlink cameras and simple video streams. Do no reference anything here which is not
         // using the unified properties/functions.
-        Rectangle {
-            Layout.alignment:   Qt.AlignHCenter
-            width:              ScreenTools.defaultFontPixelWidth * 10
-            height:             width / 2
-            color:              qgcPal.windowShadeLight
-            radius:             height * 0.5
-            visible:            _showModeIndicator
+//        Rectangle {
+//            Layout.alignment:   Qt.AlignHCenter
+//            width:              ScreenTools.defaultFontPixelWidth * 10
+//            height:             width / 2
+//            color:              qgcPal.windowShadeLight
+//            radius:             height * 0.5
+//            visible:            _showModeIndicator
 
-            //-- Video Mode
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                width:                  parent.height
-                height:                 parent.height
-                color:                  _modeIndicatorPhotoMode ? qgcPal.windowShadeLight : qgcPal.window
-                radius:                 height * 0.5
-                anchors.left:           parent.left
-                border.color:           qgcPal.text
-                border.width:           _modeIndicatorPhotoMode ? 0 : 1
+//            //-- Video Mode
+//            Rectangle {
+//                anchors.verticalCenter: parent.verticalCenter
+//                width:                  parent.height
+//                height:                 parent.height
+//                color:                  _modeIndicatorPhotoMode ? qgcPal.windowShadeLight : qgcPal.window
+//                radius:                 height * 0.5
+//                anchors.left:           parent.left
+//                border.color:           qgcPal.text
+//                border.width:           _modeIndicatorPhotoMode ? 0 : 1
 
-                QGCColoredImage {
-                    height:             parent.height * 0.5
-                    width:              height
-                    anchors.centerIn:   parent
-                    source:             "/qmlimages/camera_video.svg"
-                    fillMode:           Image.PreserveAspectFit
-                    sourceSize.height:  height
-                    color:              _modeIndicatorPhotoMode ? qgcPal.text : qgcPal.colorGreen
-                    MouseArea {
-                        anchors.fill:   parent
-                        enabled:        _switchToVideoModeAllowed
-                        onClicked:      setCameraMode(false)
-                    }
-                }
-            }
-            //-- Photo Mode
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                width:                  parent.height
-                height:                 parent.height
-                color:                  _modeIndicatorPhotoMode ? qgcPal.window : qgcPal.windowShadeLight
-                radius:                 height * 0.5
-                anchors.right:          parent.right
-                border.color:           qgcPal.text
-                border.width:           _modeIndicatorPhotoMode ? 1 : 0
-                QGCColoredImage {
-                    height:             parent.height * 0.5
-                    width:              height
-                    anchors.centerIn:   parent
-                    source:             "/qmlimages/camera_photo.svg"
-                    fillMode:           Image.PreserveAspectFit
-                    sourceSize.height:  height
-                    color:              _modeIndicatorPhotoMode ? qgcPal.colorGreen : qgcPal.text
-                    MouseArea {
-                        anchors.fill:   parent
-                        enabled:        _switchToPhotoModeAllowed
-                        onClicked:      setCameraMode(true)
-                    }
-                }
-            }
-        }
+//                QGCColoredImage {
+//                    height:             parent.height * 0.5
+//                    width:              height
+//                    anchors.centerIn:   parent
+//                    source:             "/qmlimages/camera_video.svg"
+//                    fillMode:           Image.PreserveAspectFit
+//                    sourceSize.height:  height
+//                    color:              _modeIndicatorPhotoMode ? qgcPal.text : qgcPal.colorGreen
+//                    MouseArea {
+//                        anchors.fill:   parent
+//                        enabled:        _switchToVideoModeAllowed
+//                        onClicked:      setCameraMode(false)
+//                    }
+//                }
+//            }
+//            //-- Photo Mode
+//            Rectangle {
+//                anchors.verticalCenter: parent.verticalCenter
+//                width:                  parent.height
+//                height:                 parent.height
+//                color:                  _modeIndicatorPhotoMode ? qgcPal.window : qgcPal.windowShadeLight
+//                radius:                 height * 0.5
+//                anchors.right:          parent.right
+//                border.color:           qgcPal.text
+//                border.width:           _modeIndicatorPhotoMode ? 1 : 0
+//                QGCColoredImage {
+//                    height:             parent.height * 0.5
+//                    width:              height
+//                    anchors.centerIn:   parent
+//                    source:             "/qmlimages/camera_photo.svg"
+//                    fillMode:           Image.PreserveAspectFit
+//                    sourceSize.height:  height
+//                    color:              _modeIndicatorPhotoMode ? qgcPal.colorGreen : qgcPal.text
+//                    MouseArea {
+//                        anchors.fill:   parent
+//                        enabled:        _switchToPhotoModeAllowed
+//                        onClicked:      setCameraMode(true)
+//                    }
+//                }
+//            }
+//        }
 
         RowLayout {
             Layout.alignment:   Qt.AlignHCenter
@@ -236,13 +236,13 @@ Rectangle {
             QGCRadioButton {
                 id:             videoGrabRadio
                 font.pointSize: ScreenTools.smallFontPointSize
-                text:           qsTr("Video Grab")
+                text:           qsTr("Video Screenshot") //PK replace "Video Grab" with "Video Screenshot", as it describes the functionality better
+                checked:        true //PK by default select VideoGrab, so that the farmer can immediatelly take pictures
             }
-            QGCRadioButton {
-                font.pointSize: ScreenTools.smallFontPointSize
-                text:           qsTr("Camera Trigger")
-                checked:        true
-            }
+//            QGCRadioButton { //PK remove the other option
+//                font.pointSize: ScreenTools.smallFontPointSize
+//                text:           qsTr("Camera Trigger")
+//            }
         }
 
         // Take Photo, Start/Stop Video button

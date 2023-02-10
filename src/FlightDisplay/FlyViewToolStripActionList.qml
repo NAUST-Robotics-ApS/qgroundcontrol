@@ -28,6 +28,13 @@ ToolStripActionList {
         GuidedActionLand { },
         GuidedActionRTL { },
         GuidedActionPause { },
-        GuidedActionActionList { }
+        GuidedActionActionList { },
+        ToolStripAction {
+            text:               "Sensors"
+            iconSource:         "/qmlimages/SensorsComponentIcon.png"
+            visible:            true
+            enabled:            true
+            onTriggered:        mainWindow.showSetupTool()
+        }
     ]
 }

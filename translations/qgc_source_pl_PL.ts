@@ -9480,8 +9480,8 @@ Click Ok to start the auto-tuning process.
     <message>
       <location filename="../src/ui/MainRootWindow.qml" line="164"/>
       <location filename="../src/ui/MainRootWindow.qml" line="401"/>
-      <source>Application Settings</source>
-      <translation type="unfinished">Application Settings</translation>
+      <source>Application SettingsPK</source>
+      <translation type="unfinished">Application Settings in polish</translation>
     </message>
     <message>
       <location filename="../src/ui/MainRootWindow.qml" line="288"/>
@@ -9529,7 +9529,7 @@ Click Ok to start the auto-tuning process.
     <message>
       <location filename="../src/ui/toolbar/MainStatusIndicator.qml" line="38"/>
       <source>Disconnected</source>
-      <translation type="unfinished">Disconnected</translation>
+      <translation type="unfinished">PK quality</translation>
     </message>
     <message>
       <location filename="../src/ui/toolbar/MainStatusIndicator.qml" line="39"/>

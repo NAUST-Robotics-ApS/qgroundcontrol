@@ -51,7 +51,9 @@ Rectangle {
             if (QGroundControl.multiVehicleManager.activeVehicle.autopilot.vehicleComponents.length === 0) {
                 panelLoader.setSourceComponent(noComponentsVehicleSummaryComponent)
             } else {
-                panelLoader.setSource("VehicleSummary.qml")
+//                panelLoader.setSource("VehicleSummary.qml")
+                //set the starting page of the VehicleSetup to SensorsComponent. That's the only available panel at the moment.
+                panelLoader.setSource("SensorsComponent.qml")
             }
         } else if (QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable) {
             panelLoader.setSourceComponent(missingParametersVehicleSummaryComponent)
@@ -222,78 +224,103 @@ Rectangle {
                 }
             }
 
-            SubMenuButton {
-                id:                 summaryButton
-                imageResource:      "/qmlimages/VehicleSummaryIcon.png"
-                setupIndicator:     false
-                checked:            true
-                exclusiveGroup:     setupButtonGroup
-                text:               qsTr("Summary")
-                Layout.fillWidth:   true
+//            SubMenuButton {
+//                id:                 summaryButton
+//                imageResource:      "/qmlimages/VehicleSummaryIcon.png"
+//                setupIndicator:     false
+//                checked:            true
+//                exclusiveGroup:     setupButtonGroup
+//                text:               qsTr("Summary")
+//                Layout.fillWidth:   true
 
-                onClicked: showSummaryPanel()
-            }
+//                onClicked: showSummaryPanel()
+//            }
 
-            SubMenuButton {
-                id:                 firmwareButton
-                imageResource:      "/qmlimages/FirmwareUpgradeIcon.png"
-                setupIndicator:     false
-                exclusiveGroup:     setupButtonGroup
-                visible:            !ScreenTools.isMobile && _corePlugin.options.showFirmwareUpgrade
-                text:               qsTr("Firmware")
-                Layout.fillWidth:   true
+//            SubMenuButton {
+//                id:                 firmwareButton
+//                imageResource:      "/qmlimages/FirmwareUpgradeIcon.png"
+//                setupIndicator:     false
+//                exclusiveGroup:     setupButtonGroup
+//                visible:            !ScreenTools.isMobile && _corePlugin.options.showFirmwareUpgrade
+//                text:               qsTr("Firmware")
+//                Layout.fillWidth:   true
 
-                onClicked: showPanel(this, "FirmwareUpgrade.qml")
-            }
+//                onClicked: showPanel(this, "FirmwareUpgrade.qml")
+//            }
 
-            SubMenuButton {
-                id:                 px4FlowButton
-                exclusiveGroup:     setupButtonGroup
-                visible:            QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle.vehicleLinkManager.primaryLinkIsPX4Flow : false
-                setupIndicator:     false
-                text:               qsTr("PX4Flow")
-                Layout.fillWidth:   true
-                onClicked:          showPanel(this, "PX4FlowSensor.qml")
-            }
+//            SubMenuButton {
+//                id:                 px4FlowButton
+//                exclusiveGroup:     setupButtonGroup
+//                visible:            QGroundControl.multiVehicleManager.activeVehicle ? QGroundControl.multiVehicleManager.activeVehicle.vehicleLinkManager.primaryLinkIsPX4Flow : false
+//                setupIndicator:     false
+//                text:               qsTr("PX4Flow")
+//                Layout.fillWidth:   true
+//                onClicked:          showPanel(this, "PX4FlowSensor.qml")
+//            }
 
+//            SubMenuButton {
+//                id:                 joystickButton
+//                imageResource:      "/qmlimages/Joystick.png"
+//                setupIndicator:     true
+//                setupComplete:      joystickManager.activeJoystick ? joystickManager.activeJoystick.calibrated : false
+//                exclusiveGroup:     setupButtonGroup
+//                visible:            _fullParameterVehicleAvailable && joystickManager.joysticks.length !== 0
+//                text:               qsTr("Joystick")
+//                Layout.fillWidth:   true
+//                onClicked:          showPanel(this, "JoystickConfig.qml")
+//            }
+
+//            Repeater {
+//                id:     componentRepeater
+//                model:  _fullParameterVehicleAvailable ? QGroundControl.multiVehicleManager.activeVehicle.autopilot.vehicleComponents : 0
+
+//                SubMenuButton {
+//                    imageResource:      modelData.iconResource
+//                    setupIndicator:     modelData.requiresSetup
+//                    setupComplete:      modelData.setupComplete
+//                    exclusiveGroup:     setupButtonGroup
+//                    text:               modelData.name
+//                    visible:            modelData.setupSource.toString() !== ""
+//                    Layout.fillWidth:   true
+//                    onClicked:          showVehicleComponentPanel(modelData)
+//                }
+//            }
+
+            //Hide all other Vehicle setup options and show only The Sensors for calibration.
             SubMenuButton {
                 id:                 joystickButton
-                imageResource:      "/qmlimages/Joystick.png"
-                setupIndicator:     true
-                setupComplete:      joystickManager.activeJoystick ? joystickManager.activeJoystick.calibrated : false
+                imageResource:      "/qmlimages/SensorsComponentIcon.png"
+                setupIndicator:     false
+                setupComplete:      true
                 exclusiveGroup:     setupButtonGroup
-                visible:            _fullParameterVehicleAvailable && joystickManager.joysticks.length !== 0
-                text:               qsTr("Joystick")
+                visible:            true
+                text:               qsTr("Sensors")
                 Layout.fillWidth:   true
-                onClicked:          showPanel(this, "JoystickConfig.qml")
-            }
-
-            Repeater {
-                id:     componentRepeater
-                model:  _fullParameterVehicleAvailable ? QGroundControl.multiVehicleManager.activeVehicle.autopilot.vehicleComponents : 0
-
-                SubMenuButton {
-                    imageResource:      modelData.iconResource
-                    setupIndicator:     modelData.requiresSetup
-                    setupComplete:      modelData.setupComplete
-                    exclusiveGroup:     setupButtonGroup
-                    text:               modelData.name
-                    visible:            modelData.setupSource.toString() !== ""
-                    Layout.fillWidth:   true
-                    onClicked:          showVehicleComponentPanel(modelData)
-                }
+                onClicked:          showPanel(this, "SensorsComponent.qml")
             }
 
             SubMenuButton {
+                id:                 safetyButton
+                imageResource:      "/qmlimages/SafetyComponentIcon.png"
                 setupIndicator:     false
+                setupComplete:      true
                 exclusiveGroup:     setupButtonGroup
-                visible:            QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable &&
-                                    !QGroundControl.multiVehicleManager.activeVehicle.usingHighLatencyLink &&
-                                    _corePlugin.showAdvancedUI
-                text:               qsTr("Parameters")
+                visible:            true
+                text:               qsTr("Safety")
                 Layout.fillWidth:   true
-                onClicked:          showPanel(this, "SetupParameterEditor.qml")
+                onClicked:          showPanel(this, "SafetyComponent.qml")
             }
+
+//            SubMenuButton {
+//                setupIndicator:     false
+//                exclusiveGroup:     setupButtonGroup
+//                visible:            QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable &&
+//                                    !QGroundControl.multiVehicleManager.activeVehicle.usingHighLatencyLink &&
+//                                    _corePlugin.showAdvancedUI
+//                text:               qsTr("Parameters")
+//                Layout.fillWidth:   true
+//                onClicked:          showPanel(this, "SetupParameterEditor.qml")
+//            }
 
         }
     }

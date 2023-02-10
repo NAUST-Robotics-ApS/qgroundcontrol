@@ -38,6 +38,11 @@ Item {
     property var totalToolInsets:   _toolInsets // These are the insets for your custom overlay additions
     property var mapControl
 
+    property var activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+
+    property var pkMapItem
+    property var mapItems: []
+
     QGCToolInsets {
         id:                         _toolInsets
         leftEdgeCenterInset:    0
@@ -52,5 +57,67 @@ Item {
         bottomEdgeCenterInset:    0
         bottomEdgeLeftInset:        0
         bottomEdgeRightInset:       0
+    }
+
+    Component {
+        id: myMapItemComponent
+
+        MapQuickItem {
+            id:             mapQuickItem
+            anchorPoint.x:  dragHandle.width / 2
+            anchorPoint.y:  dragHandle.height / 2
+            z:              QGroundControl.zOrderMapItems + 2
+            property alias mcdlLabel : mcdlLabel.text
+
+            sourceItem: Rectangle {
+                id:         dragHandle
+                width:      ScreenTools.defaultFontPixelHeight * 2
+                height:     width
+                radius:     width / 2
+                color:      "white"
+                opacity:    .90
+                Label {
+                    id:         mcdlLabel
+                    text:       ""
+                    width:      ScreenTools.defaultFontPixelHeight * 1.2
+                    height:     width
+                    font.pixelSize:  ScreenTools.defaultFontPixelHeight * 0.6
+                    topPadding: 4
+                    leftPadding: 4
+                }
+            }
+        }
+    }
+
+    //Add point at the drone's current location
+    QGCButton {
+        id: mcdlButton
+        anchors.right:      clearButton.left
+        anchors.bottom:     parent.bottom
+        anchors.margins:    ScreenTools.defaultFontPixelWidth / 2
+        text: qsTr("MCDL") //Mark Current Drone Location
+        onClicked: {
+            var myMapItem = myMapItemComponent.createObject(mapControl)
+            myMapItem.coordinate = globals.activeVehicle.coordinate
+            myMapItem.mcdlLabel = globals.activeVehicle.coordinate.latitude + "\n" + globals.activeVehicle.coordinate.longitude
+            mapControl.addMapItem(myMapItem)
+            mapItems.push(myMapItem)
+        }
+    }
+
+    QGCButton {
+        id: clearButton
+        anchors.right:       parent.right
+        anchors.bottom:        parent.bottom
+        anchors.margins: ScreenTools.defaultFontPixelWidth / 2
+        text: qsTr("Clear MCDL")
+        onClicked: {
+            for(var i = 0; i < mapItems.length; i++){
+                mapControl.removeMapItem(mapItems[i])
+            }
+            for(var j = 0; j < mapItems.length; j++){
+                mapItems.pop();
+            }
+        }
     }
 }
