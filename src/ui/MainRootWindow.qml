@@ -538,11 +538,24 @@ ApplicationWindow {
             var message = mainWindow._vehicleMessage
             //PK Quality hack - check the content of the message and append appropriate text. The message in the if clause has to be the same as the message
             //displayed in the popup on QGC.
-            if(message == "Reposition is outside geofence"){
-                message += " TEST"
+//            if(message == "Reposition is outside geofence"){
+//                message += " TEST"
+//            }
+            if(message == "Failure: Kill switch engaged"){ //TODO check if the text is correct
+                message += ". Disengage the killswitch by moving the killswitch to the left."
             }
-            if(message == "Failure killswitch engaged"){
-                message += " Disengage the killswitch."
+            else if(message == "Preflight Fail: not enough GPS Satellites"
+                    || "Arming Denied! Global position required"){
+                message += ". Please wait until the drone receives signal from more GPS satellites."
+            }
+            else if (message == "Preflight: Strong magnetic interference detected"){
+                message += ". Please recalibrate the drone."
+            }
+            else if (message == "Failure: RTL switch engaged"){
+                message += ". Please make sure that the 'A' button does not shine."
+            }
+            else if (message == "Arming Denied: switch to manual mode first"){
+                message += ". Please move top left switch to the middle position (Position mode). If the switch is already in this position, switch it up and back."
             }
 
             criticalVehicleMessageText.text = message

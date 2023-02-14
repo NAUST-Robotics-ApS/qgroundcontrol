@@ -58,16 +58,8 @@ Item {
         }
 
         QGCLabel {
-            text:                   percent
+            text:                   percent + "%"
 //            font.pointSize:         ScreenTools.mediumFontPointSize + 10
-            font.pointSize:         12
-//            color:                  qgcPal.colorRed
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
-        QGCLabel {
-            text:                   "%"
-//            font.pointSize:         ScreenTools.mediumFontPointSize
             font.pointSize:         12
 //            color:                  qgcPal.colorRed
             anchors.verticalCenter: parent.verticalCenter
